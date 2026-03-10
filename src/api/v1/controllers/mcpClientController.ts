@@ -11,15 +11,12 @@ const postMcpClient = async (
     const { prompt } = req.body;
 
     if (!prompt || typeof prompt !== "string") {
-      return next(
-        new CustomError(
-          "Invalid request body: 'prompt' must be a non-empty string",
-          400,
-        ),
-      );
+      next(new CustomError("Prompt is required and must be a string", 400));
+      return;
     }
 
     const result = await callMcpClient(prompt);
+
     res.json(result);
   } catch (error) {
     next(new CustomError((error as Error).message, 500));
